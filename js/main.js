@@ -1,16 +1,16 @@
-alert("Bienvenido al sistema de OdontoMAX");
+alert("Bienvenido al Sistema de Turnos de 🏥 MiSalud 🏥");
 let opc = 0;
 let conf = 0;
+// 💊
+let atCorta = 0;
+let atMedia = 0;
+let atLarga = 0;
 
-let atCorta;
-let atMedia;
-let atLarga;
-
-let horasLun;
-let horasMar;
-let horasMie;
-let horasJue;
-let horasVie;
+let horasLun = 0;
+let horasMar = 0;
+let horasMie = 0;
+let horasJue = 0;
+let horasVie = 0;
 
 let dispLun = 0;
 let dispMar = 0;
@@ -18,11 +18,11 @@ let dispMie = 0;
 let dispJue = 0;
 let dispVie = 0;
 
-let turnosLun = "Turnos Lunes: ";
-let turnosMar = "Turnos Martes: ";
-let turnosMie = "Turnos Miércoles: ";
-let turnosJue = "Turnos Jueves: ";
-let turnosVie = "Turnos Viernes: ";
+let turnosLun = "";
+let turnosMar = "";
+let turnosMie = "";
+let turnosJue = "";
+let turnosVie = "";
 
 ini();
 
@@ -30,16 +30,17 @@ function ini() {
   while (opc != 5) {
     opc = Number(
       prompt(
-        "Ingrese la opción: \n1.  Seteo Configuración \n2. Cargar Turnos \n3. Consulta Disponibilidad \n4. Reporte Turnos Asignados \n5. Salir"
+        "📌 Ingrese una opción: 📌 \n1. ⚙️Seteo Configuración \n2. 📝 Cargar Turnos \n3. ⏱️ Consulta Disponibilidad \n4. 📊 Reporte Turnos Asignados \n5. 🛫 Salir"
       )
     );
+
     switch (opc) {
       case 1: // Seteo Configuración
         if (conf == 0) {
           seteoConfig();
         } else {
           alert(
-            `Solo se puede setear los parámetros 1 vez, para cambiarlos debe salir y volver a ingresar al sistema\n Valores seteados: \n   - Horas Lunes: ${horasLun}\n   - Horas Martes: ${horasMar}\n   - Horas Miércoles: ${horasMie}\n   - Horas Jueves: ${horasJue}\n   - Horas Viernes: ${horasVie}\n   - Minutos Atención Corta: ${atCorta}\n   - Minutos Atención Media: ${atMedia}\n   - Minutos Atención Larga: ${atLarga}`
+            `🤚🏻 Solo se puede setear los parámetros 1 vez, para cambiarlos debe salir y volver a ingresar al sistema\n Valores seteados: \n   - Horas Lunes: ${horasLun}\n   - Horas Martes: ${horasMar}\n   - Horas Miércoles: ${horasMie}\n   - Horas Jueves: ${horasJue}\n   - Horas Viernes: ${horasVie}\n   - Minutos Atención Corta: ${atCorta}\n   - Minutos Atención Media: ${atMedia}\n   - Minutos Atención Larga: ${atLarga}`
           );
         }
         break;
@@ -49,15 +50,13 @@ function ini() {
           cargaTurno();
         } else {
           alert(
-            "No se puede cargar turnos, primero debe setear la configuración"
+            "🚨 No se puede cargar turnos 🚨\n    Primero debe setear la configuración"
           );
         }
         break;
 
       case 3: // Cns Disponibilidad
-        alert(
-          `Horas Disponible Lunes: ${dispLun}\nHoras Disponible Martes: ${dispMar}\nHoras Disponible Miércoles: ${dispMie}\nHoras Disponible Jueves: ${dispJue}\nHoras Disponible Viernes: ${dispVie}`
-        );
+        getDisponibilidad();
         break;
 
       case 4: // Reporte de Turnos
@@ -65,82 +64,52 @@ function ini() {
         break;
 
       case 5: // Salir
-        alert("Gracias por usar el sistema de OdontoMAX");
+        alert("Gracias por usar el Sistema de Turnos de 🏥 MiSalud 🏥");
         break;
 
       default:
-        opcionNoValida();
+        opcionNoValida(1, 5);
         break;
     }
   }
 }
 
 function seteoConfig() {
-  horasLun = Number(prompt("Ingrese la cantidad de horas para el Lunes"));
-  while (isNaN(horasLun) || horasLun < 0 || horasLun == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    horasLun = Number(prompt("Ingrese la cantidad de horas para el Lunes"));
-  }
-
-  horasMar = Number(prompt("Ingrese la cantidad de horas para el Martes"));
-  while (isNaN(horasMar) || horasMar < 0 || horasMar == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    horasMar = Number(prompt("Ingrese la cantidad de horas para el Martes"));
-  }
-
-  horasMie = Number(prompt("Ingrese la cantidad de horas para el Miércoles"));
-  while (isNaN(horasMie) || horasMie < 0 || horasMie == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    horasMie = Number(prompt("Ingrese la cantidad de horas para el Miércoles"));
-  }
-
-  horasJue = Number(prompt("Ingrese la cantidad de horas para el Jueves"));
-  while (isNaN(horasJue) || horasJue < 0 || horasJue == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    horasJue = Number(prompt("Ingrese la cantidad de horas para el Jueves"));
-  }
-
-  horasVie = Number(prompt("Ingrese la cantidad de horas para el Viernes"));
-  while (isNaN(horasVie) || horasVie < 0 || horasVie == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    horasVie = Number(prompt("Ingrese la cantidad de horas para el Viernes"));
-  }
-
-  atCorta = Number(
-    prompt("Ingrese la cantidad de minutos de la Atención Corta")
+  horasLun = setPrompt("⏰ Ingrese la cantidad de horas para el Lunes", 1, 23);
+  horasMar = setPrompt("⏰ Ingrese la cantidad de horas para el Martes", 1, 23);
+  horasMie = setPrompt(
+    "⏰ Ingrese la cantidad de horas para el Miércoles",
+    1,
+    23
   );
-  while (isNaN(atCorta) || atCorta < 0 || atCorta == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    atCorta = Number(
-      prompt("Ingrese la cantidad de minutos de la Atención Corta")
-    );
-  }
-
-  atMedia = Number(
-    prompt("Ingrese la cantidad de minutos de la Atención Media")
+  horasJue = setPrompt("⏰ Ingrese la cantidad de horas para el Jueves", 1, 23);
+  horasVie = setPrompt(
+    "⏰ Ingrese la cantidad de horas para el Viernes",
+    1,
+    23
   );
-  while (isNaN(atMedia) || atMedia < 0 || atMedia == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    atMedia = Number(
-      prompt("Ingrese la cantidad de minutos de la Atención Media")
-    );
-  }
 
-  atLarga = Number(
-    prompt("Ingrese la cantidad de minutos de la Atención Larga")
+  atCorta = setPrompt(
+    "🚑 Ingrese la cantidad de minutos de la Atención Corta",
+    1,
+    1380
   );
-  while (isNaN(atLarga) || atLarga < 0 || atLarga == "") {
-    alert("Ingrese un número que sea mayor a 0");
-    atLarga = Number(
-      prompt("Ingrese la cantidad de minutos de la Atención Larga")
-    );
-  }
+  atMedia = setPrompt(
+    "🚑 Ingrese la cantidad de minutos de la Atención Media",
+    1,
+    1380
+  );
+  atLarga = setPrompt(
+    "🚑 Ingrese la cantidad de minutos de la Atención Larga",
+    1,
+    1380
+  );
 
-  dispLun = horasLun;
-  dispMar = horasMar;
-  dispMie = horasMie;
-  dispJue = horasJue;
-  dispVie = horasVie;
+  dispLun = horasLun * 60;
+  dispMar = horasMar * 60;
+  dispMie = horasMie * 60;
+  dispJue = horasJue * 60;
+  dispVie = horasVie * 60;
 
   conf = 1;
 }
@@ -150,67 +119,87 @@ function cargaTurno() {
   let dia;
   let tipoAtencion;
 
-  nombre = prompt("Ingrese el nombre del paciente");
+  nombre = prompt("🙍🏼‍♂️ Ingrese el nombre del paciente");
+  while (nombre == "") {
+    alert("🚨 Debe ingresar un nombre 🚨");
+    nombre = prompt("🙍🏼‍♂️ Ingrese el nombre del paciente");
+  }
 
-  dia = setDia();
+  dia = setPrompt(
+    "🗓️ Ingrese el día:\n        1.Lunes - 2.Martes - 3.Miércoles - 4.Jueves - 5.Viernes ",
+    1,
+    5
+  );
 
-  tipoAtencion = setTipoAtencion();
+  tipoAtencion = setPrompt(
+    "🚑 Ingrese el tipo de Atención:\n        1.Corta - 2.Media - 3.Larga",
+    1,
+    3
+  );
 
   while (armaListadoTurno(nombre, dia, tipoAtencion) == 0) {
     alert(
-      `No hay disponibilidad para el día ${getNomDia(dia)}\nSeleccione otro día`
+      `📌 No hay disponibilidad para el día ${getNomDia(
+        dia
+      )} 📌\n     Seleccione otro día`
     );
-    dia = setDia();
+    dia = setPrompt(
+      "🗓️ Ingrese el día:\n        1.Lunes - 2.Martes - 3.Miércoles - 4.Jueves - 5.Viernes ",
+      1,
+      5
+    );
   }
 }
 
-function opcionNoValida() {
-  alert(`Seleccionó una opción de menú no valida`);
+function opcionNoValida(min, max) {
+  alert(
+    `🚨 Seleccionó una opción de menú no valida 🚨\n - Solo se permiten números entre ${min} y ${max}`
+  );
 }
 
 function armaListadoTurno(nombre, dia, tipoAtencion) {
   switch (dia) {
     case 1:
-      if (dispLun - duracionAtencion(tipoAtencion) < 0) {
+      if (dispLun - getDuracionAtencion(tipoAtencion) < 0) {
         return 0;
       } else {
-        dispLun = dispLun - duracionAtencion(tipoAtencion);
+        dispLun = dispLun - getDuracionAtencion(tipoAtencion);
         turnosLun = turnosLun + armaTexto(nombre, tipoAtencion);
       }
       break;
 
     case 2:
-      if (dispMar - duracionAtencion(tipoAtencion) < 0) {
+      if (dispMar - getDuracionAtencion(tipoAtencion) < 0) {
         return 0;
       } else {
-        dispMar = dispMar - duracionAtencion(tipoAtencion);
+        dispMar = dispMar - getDuracionAtencion(tipoAtencion);
         turnosMar = turnosMar + armaTexto(nombre, tipoAtencion);
       }
       break;
 
     case 3:
-      if (dispMie - duracionAtencion(tipoAtencion) < 0) {
+      if (dispMie - getDuracionAtencion(tipoAtencion) < 0) {
         return 0;
       } else {
-        dispMie = dispMie - duracionAtencion(tipoAtencion);
+        dispMie = dispMie - getDuracionAtencion(tipoAtencion);
         turnosMie = turnosMie + armaTexto(nombre, tipoAtencion);
       }
       break;
 
     case 4:
-      if (dispJue - duracionAtencion(tipoAtencion) < 0) {
+      if (dispJue - getDuracionAtencion(tipoAtencion) < 0) {
         return 0;
       } else {
-        dispJue = dispJue - duracionAtencion(tipoAtencion);
+        dispJue = dispJue - getDuracionAtencion(tipoAtencion);
         turnosJue = turnosJue + armaTexto(nombre, tipoAtencion);
       }
       break;
 
     case 5:
-      if (dispVie - duracionAtencion(tipoAtencion) < 0) {
+      if (dispVie - getDuracionAtencion(tipoAtencion) < 0) {
         return 0;
       } else {
-        dispVie = dispVie - duracionAtencion(tipoAtencion);
+        dispVie = dispVie - getDuracionAtencion(tipoAtencion);
         turnosVie = turnosVie + armaTexto(nombre, tipoAtencion);
       }
       break;
@@ -221,18 +210,49 @@ function armaListadoTurno(nombre, dia, tipoAtencion) {
 }
 
 function armaTexto(nom, at) {
-  return `\n   - Nombre: ${nom} - Atención: ${getNomAtencion(
+  return `- 🙍🏼‍♂️ Nombre: ${nom} - 🚑 Atención: ${getNomAtencion(
     at
-  )} (${duracionAtencion(at)} min.)`;
+  )} (${getDuracionAtencion(at)} min.)\n  `;
 }
 
 function getTurnos() {
   alert(
-    `${turnosLun}\n${turnosMar}\n${turnosMie}\n${turnosJue}\n${turnosVie}\n`
+    `🗓️ Turnos Lunes: (Hs Atención ${horasLun}) - (Hs Disponible ${
+      dispLun / 60
+    })
+    ${turnosLun}
+    \n🗓️ Turnos Martes: (Hs Atención ${horasMar}) - (Hs Disponible ${
+      dispMar / 60
+    })
+    ${turnosMar}
+    \n🗓️ Turnos Miércoles: (Hs Atención ${horasMie}) - (Hs Disponible ${
+      dispMie / 60
+    })
+    ${turnosMie}
+    \n🗓️ Turnos Jueves: (Hs Atención ${horasJue}) - (Hs Disponible ${
+      dispJue / 60
+    })
+    ${turnosJue}
+    \n🗓️ Turnos Viernes: (Hs Atención ${horasVie}) - (Hs Disponible ${
+      dispVie / 60
+    })
+    ${turnosVie}`
   );
 }
 
-function duracionAtencion(tipoAtencion) {
+function getDisponibilidad() {
+  alert(
+    `⏰ Horas Disponible Lunes: ${dispLun / 60}\n⏰ Horas Disponible Martes: ${
+      dispMar / 60
+    }\n⏰ Horas Disponible Miércoles: ${
+      dispMie / 60
+    }\n⏰ Horas Disponible Jueves: ${
+      dispJue / 60
+    }\n⏰ Horas Disponible Viernes: ${dispVie / 60}`
+  );
+}
+
+function getDuracionAtencion(tipoAtencion) {
   if (tipoAtencion == 1) return atCorta;
   if (tipoAtencion == 2) return atMedia;
   if (tipoAtencion == 3) return atLarga;
@@ -255,33 +275,13 @@ function getNomAtencion(at) {
   return "Atención No Definida";
 }
 
-function setDia() {
-  let dia = Number(
-    prompt(
-      "Ingrese el día: 1.Lunes - 2.Martes - 3.Miércoles - 4.Jueves - 5.Viernes"
-    )
-  );
-  while (isNaN(dia) || dia < 1 || dia > 5) {
-    opcionNoValida();
-    dia = Number(
-      prompt(
-        "Ingrese el día: 1.Lunes - 2.Martes - 3.Miércoles - 4.Jueves - 5.Viernes"
-      )
-    );
-  }
-  return dia;
-}
+function setPrompt(mensaje, min, max) {
+  let valor = Number(prompt(`${mensaje}`));
 
-function setTipoAtencion() {
-  let tipoAtencion = Number(
-    prompt("Ingrese el tipo de Atención: 1.Corta - 2.Media - 3.Larga")
-  );
-
-  while (isNaN(tipoAtencion) || tipoAtencion < 1 || tipoAtencion > 3) {
-    opcionNoValida();
-    tipoAtencion = Number(
-      prompt("Ingrese el tipo de Atención: 1.Corta - 2.Media - 3.Larga")
-    );
+  while (isNaN(valor) || valor < min || valor > max || valor == "") {
+    opcionNoValida(min, max);
+    valor = Number(prompt(`${mensaje}`));
   }
-  return tipoAtencion;
+
+  return valor;
 }
