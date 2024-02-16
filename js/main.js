@@ -29,7 +29,7 @@ while (opc != 5) {
   // menú del sistema
   opc = Number(
     prompt(
-      "📌 Ingrese una opción: 📌 \n1. ⚙️Seteo Configuración \n2. 📝 Cargar Turnos \n3. ⏱️ Consulta Disponibilidad \n4. 📊 Reporte Turnos Asignados \n5. 🛫 Salir"
+      "📌 Ingrese una opción: 📌 \n     1. ⚙️Seteo Configuración \n     2. 📝 Cargar Turnos \n     3. ⏱️ Consulta Disponibilidad \n     4. 📊 Reporte Turnos Asignados \n     5. 🛫 Salir"
     )
   );
 
