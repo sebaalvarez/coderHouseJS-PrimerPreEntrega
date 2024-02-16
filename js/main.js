@@ -1,7 +1,7 @@
 alert("Bienvenido al Sistema de Turnos de 🏥 MiSalud 🏥");
 let opc = 0;
 let conf = 0;
-// 💊
+
 let atCorta = 0;
 let atMedia = 0;
 let atLarga = 0;
