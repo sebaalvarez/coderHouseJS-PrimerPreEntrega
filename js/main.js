@@ -24,57 +24,57 @@ let turnosMie = "";
 let turnosJue = "";
 let turnosVie = "";
 
-ini();
+// bucle interactivo que visualiza el menú
+while (opc != 5) {
+  // menú del sistema
+  opc = Number(
+    prompt(
+      "📌 Ingrese una opción: 📌 \n1. ⚙️Seteo Configuración \n2. 📝 Cargar Turnos \n3. ⏱️ Consulta Disponibilidad \n4. 📊 Reporte Turnos Asignados \n5. 🛫 Salir"
+    )
+  );
 
-function ini() {
-  while (opc != 5) {
-    opc = Number(
-      prompt(
-        "📌 Ingrese una opción: 📌 \n1. ⚙️Seteo Configuración \n2. 📝 Cargar Turnos \n3. ⏱️ Consulta Disponibilidad \n4. 📊 Reporte Turnos Asignados \n5. 🛫 Salir"
-      )
-    );
+  // funcionalidad para cada entrada del menú
+  switch (opc) {
+    case 1: // Seteo Configuración
+      if (conf == 0) {
+        seteoConfig();
+      } else {
+        alert(
+          `🤚🏻 Solo se puede setear los parámetros 1 vez, para cambiarlos debe salir y volver a ingresar al sistema\n Valores seteados: \n   - Horas Lunes: ${horasLun}\n   - Horas Martes: ${horasMar}\n   - Horas Miércoles: ${horasMie}\n   - Horas Jueves: ${horasJue}\n   - Horas Viernes: ${horasVie}\n   - Minutos Atención Corta: ${atCorta}\n   - Minutos Atención Media: ${atMedia}\n   - Minutos Atención Larga: ${atLarga}`
+        );
+      }
+      break;
 
-    switch (opc) {
-      case 1: // Seteo Configuración
-        if (conf == 0) {
-          seteoConfig();
-        } else {
-          alert(
-            `🤚🏻 Solo se puede setear los parámetros 1 vez, para cambiarlos debe salir y volver a ingresar al sistema\n Valores seteados: \n   - Horas Lunes: ${horasLun}\n   - Horas Martes: ${horasMar}\n   - Horas Miércoles: ${horasMie}\n   - Horas Jueves: ${horasJue}\n   - Horas Viernes: ${horasVie}\n   - Minutos Atención Corta: ${atCorta}\n   - Minutos Atención Media: ${atMedia}\n   - Minutos Atención Larga: ${atLarga}`
-          );
-        }
-        break;
+    case 2: // Carga Turnos
+      if (conf != 0) {
+        cargaTurno();
+      } else {
+        alert(
+          "🚨 No se puede cargar turnos 🚨\n    Primero debe setear la configuración"
+        );
+      }
+      break;
 
-      case 2: // Carga Turnos
-        if (conf != 0) {
-          cargaTurno();
-        } else {
-          alert(
-            "🚨 No se puede cargar turnos 🚨\n    Primero debe setear la configuración"
-          );
-        }
-        break;
+    case 3: // Cns Disponibilidad
+      getDisponibilidad();
+      break;
 
-      case 3: // Cns Disponibilidad
-        getDisponibilidad();
-        break;
+    case 4: // Reporte de Turnos
+      getTurnos();
+      break;
 
-      case 4: // Reporte de Turnos
-        getTurnos();
-        break;
+    case 5: // Salir
+      alert("Gracias por usar el Sistema de Turnos de 🏥 MiSalud 🏥");
+      break;
 
-      case 5: // Salir
-        alert("Gracias por usar el Sistema de Turnos de 🏥 MiSalud 🏥");
-        break;
-
-      default:
-        opcionNoValida(1, 5);
-        break;
-    }
+    default:
+      opcionNoValida(1, 5);
+      break;
   }
 }
 
 function seteoConfig() {
+  // configuración de parámetros iniciales
   horasLun = setPrompt("⏰ Ingrese la cantidad de horas para el Lunes", 1, 23);
   horasMar = setPrompt("⏰ Ingrese la cantidad de horas para el Martes", 1, 23);
   horasMie = setPrompt(
@@ -276,6 +276,7 @@ function getNomAtencion(at) {
 }
 
 function setPrompt(mensaje, min, max) {
+  // realiza la validación sobre el valor ingresado en los diferentes prompt
   let valor = Number(prompt(`${mensaje}`));
 
   while (isNaN(valor) || valor < min || valor > max || valor == "") {
